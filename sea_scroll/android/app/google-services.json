@@ -1,0 +1,39 @@
+ {
+  "project_info": {
+    "project_number": "513581811704",
+    "project_id": "sea-scroll",
+    "storage_bucket": "sea-scroll.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:513581811704:android:841b280f665c251d38780d",
+        "android_client_info": {
+          "package_name": "com.example.sea_scroll"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "513581811704-l6j4numnfa431s56ivh2c77avorf41s6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6EjrATrB63JTM4Ad3s_zycglzwR6hxcY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "513581811704-l6j4numnfa431s56ivh2c77avorf41s6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
