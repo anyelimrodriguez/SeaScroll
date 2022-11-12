@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import '../auth.dart';
 
 import '../components/back-btn.dart';
 import '../components/elevated-box-decoration.dart';
@@ -18,6 +20,20 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupState extends State<Signup> {
+
+  final TextEditingController _emailTextController = TextEditingController();
+  final TextEditingController _passwordTextController = TextEditingController();
+
+  Future<void> createUserWithEmailAndPassword() async{
+    try{ 
+      await Auth().createUserWithEmailAndPassword(
+      email: _emailTextController.text, 
+      password: _passwordTextController.text);
+    } on FirebaseAuthException catch(e){
+      print(e.code);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -52,12 +68,26 @@ class _SignupState extends State<Signup> {
                     SizedBox(
                       height: height / 30,
                     ),
+                    /*TextField(
+                      controller: _emailTextController,
+                      decoration: InputDecoration(
+                        labelText: 'Email',
+                      )
+                    ),*/
                     montStyle('Password'),
+                    /*TextField(
+                      controller: _passwordTextController,
+                      decoration: InputDecoration(
+                      )
+                    ),*/
                   ],
                 )),
                 SizedBox(
                   height: height / 5,
                 ),
+                /*ElevatedButton(
+                  onPressed: createUserWithEmailAndPassword, 
+                  child: Text('Create Account')),*/
                 Expanded(
                     child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
