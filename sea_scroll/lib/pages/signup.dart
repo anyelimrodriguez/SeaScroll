@@ -24,6 +24,9 @@ class _SignupState extends State<Signup> {
   final TextEditingController _emailTextController = TextEditingController();
   final TextEditingController _passwordTextController = TextEditingController();
 
+  //This will be used so that sign up/in is the same page
+  bool isSignUpPage = true; 
+
   Future<void> createUserWithEmailAndPassword() async{
     try{ 
       await Auth().createUserWithEmailAndPassword(
@@ -32,6 +35,49 @@ class _SignupState extends State<Signup> {
     } on FirebaseAuthException catch(e){
       print(e.code);
     }
+  }
+  Future<void> signInWithEmailAndPassword() async{
+    try{ 
+      await Auth().signInWithEmailAndPassword(
+      email: _emailTextController.text, 
+      password: _passwordTextController.text);
+    } on FirebaseAuthException catch(e){
+      print(e.code);
+    }
+  }
+
+  //This is for the email and password fields
+  Widget _entryField(
+    String title,
+    TextEditingController controller
+  ){
+    return TextField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: title
+      )
+    );
+  }
+
+  //This is the button to create account or sign in 
+  Widget _submitButton(){
+    return ElevatedButton(
+      onPressed: isSignUpPage?createUserWithEmailAndPassword:signInWithEmailAndPassword, 
+      child: Text(isSignUpPage?'Create Account':'Sign In')
+    );
+  }
+
+  //This is the button to toggle between sign up/in pages so that the content displays correctly
+  Widget _togglePages(){
+    return TextButton(
+      onPressed: (){
+        setState(() {
+          isSignUpPage = !isSignUpPage; //set it to the opposite of what it is
+        });
+      },
+      child: Text(
+        "${isSignUpPage ? "Already" : "Don't"} have an account? Sign ${isSignUpPage ? "In" : "Up"}"
+      ));
   }
 
   @override
@@ -57,7 +103,7 @@ class _SignupState extends State<Signup> {
                 SizedBox(
                   height: height / 15,
                 ),
-                montStyle('Signup'),
+                montStyle(isSignUpPage?'Signup':'Signin'),
                 SizedBox(
                   height: height / 15,
                 ),
@@ -68,26 +114,16 @@ class _SignupState extends State<Signup> {
                     SizedBox(
                       height: height / 30,
                     ),
-                    /*TextField(
-                      controller: _emailTextController,
-                      decoration: InputDecoration(
-                        labelText: 'Email',
-                      )
-                    ),*/
+                    //_entryField('Email', _emailTextController),
                     montStyle('Password'),
-                    /*TextField(
-                      controller: _passwordTextController,
-                      decoration: InputDecoration(
-                      )
-                    ),*/
+                    //_entryField('Password', _passwordTextController)
                   ],
                 )),
                 SizedBox(
                   height: height / 5,
                 ),
-                /*ElevatedButton(
-                  onPressed: createUserWithEmailAndPassword, 
-                  child: Text('Create Account')),*/
+                //_submitButton(),
+                //_togglePages(),
                 Expanded(
                     child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
