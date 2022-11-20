@@ -25,6 +25,7 @@ class _WriteState extends State<Write> {
         ),
       ),
       child: Scaffold(
+        resizeToAvoidBottomInset : false,
         backgroundColor: Colors.transparent,
         body: Column(
           children: <Widget> [
