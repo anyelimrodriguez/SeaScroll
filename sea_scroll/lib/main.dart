@@ -3,9 +3,12 @@ import 'pages/intro.dart';
 import 'package:postgres/postgres.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
+import 'package:firebase_core/firebase_core.dart';
 
-void main() async {
+
+Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   print('something');
   //var connection = PostgreSQLConnection("10.0.2.2", 5432, "postgres", username: "postgres", password: "V:EHT]3&R;BP5sQQ");
 
@@ -52,6 +55,7 @@ void main() async {
   // print('finally');
   // connection.close();
 
+>>>>>>> sea_scroll/lib/main.dart
   runApp(const MyApp());
 }
 
