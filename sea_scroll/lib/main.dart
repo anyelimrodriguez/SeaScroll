@@ -55,7 +55,6 @@ Future<void> main() async{
   // print('finally');
   // connection.close();
 
->>>>>>> sea_scroll/lib/main.dart
   runApp(const MyApp());
 }
 
