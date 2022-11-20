@@ -28,7 +28,7 @@ class _HomeState extends State<Home> {
 
   //var connection = PostgreSQLConnection("35.193.54.73", 5432, "postgres", username: "postgres", password: "V:EHT]3&R;BP5sQQ");
 
-  var url = Uri.parse('https://testfunc-o6qnidhdcq-uc.a.run.app/');
+  var url = Uri.parse('https://getusers-rxfc6rk7la-uc.a.run.app/');
 
   Future<List<dynamic>> _getData() async {
     var response = await http.get(url);
@@ -41,7 +41,7 @@ class _HomeState extends State<Home> {
     }
   }
 
-  var urlPost = Uri.parse('https://testfuncpost-o6qnidhdcq-uc.a.run.app/');
+  var urlPost = Uri.parse('https://postuser-rxfc6rk7la-uc.a.run.app/');
 
   Future<void> _postData({required String name, required String bio, String? pfp}) async {
     var response;
