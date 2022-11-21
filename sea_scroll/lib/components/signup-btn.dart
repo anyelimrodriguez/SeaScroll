@@ -8,7 +8,7 @@ buttonS(context, double height) {
       child: InkWell(
         onTap: () {
           Navigator.push(context,
-              MaterialPageRoute(builder: ((context) => const Signup())));
+              MaterialPageRoute(builder: ((context) => const RegisterPage())));
         },
         child: Image.asset(
           'assets/signup-btn.png',

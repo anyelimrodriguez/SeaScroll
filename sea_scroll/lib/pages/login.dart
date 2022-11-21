@@ -3,73 +3,179 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:sea_scroll/pages/home.dart';
 
 import '../components/back-btn.dart';
 import '../components/elevated-box-decoration.dart';
 import '../components/enter-btn.dart';
 import '../components/montStyle.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+import 'signup.dart';
 
-  // final String title;
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginState extends State<Login> {
+class _LoginPageState extends State<LoginPage> {
+  bool _secureText = true;
+
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
-
-    return Container(
-        height: height,
-        decoration: const BoxDecoration(
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
+      backgroundColor: Colors.grey[350],
+      body: SafeArea(
+          child: Container(
+        decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/sand-bg.png'),
             fit: BoxFit.fitHeight,
           ),
         ),
-        child: Container(
-          margin:
-              const EdgeInsets.only(left: 30, top: 100, right: 30, bottom: 50),
-          decoration: elevatedBox(),
-          child: Expanded(
-            child: Column(
-              children: [
-                SizedBox(
-                  height: height / 15,
+        child: Center(
+            child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            // ignore: prefer_const_literals_to_create_immutables
+            children: [
+              Icon(
+                Icons.android,
+                size: 100,
+              ),
+              //Intro
+
+              Text(
+                'Hello Again!',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 36,
                 ),
-                montStyle('Login'),
-                SizedBox(
-                  height: height / 15,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                'Welcome back, you\'ve been missed!',
+                style: TextStyle(
+                  fontSize: 20,
                 ),
-                Expanded(
-                    child: Column(
-                  children: [
-                    montStyle('Email'),
-                    SizedBox(
-                      height: height / 30,
+              ),
+              SizedBox(
+                height: 50,
+              ),
+
+              //Email textfield
+
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    // border: Border.all(color: Colors.white),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 20.0),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Email',
+                      ),
                     ),
-                    montStyle('Password'),
-                  ],
-                )),
-                SizedBox(
-                  height: height / 5,
+                  ),
                 ),
-                Expanded(
-                    child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    buttonB(context, height / 9),
-                    buttonE(context, height / 9),
-                  ],
-                ))
-              ],
-            ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              //Password textfield
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    // border: Border.all(color: Colors.white),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 20.0),
+                    child: TextField(
+                      obscureText: _secureText,
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'Password',
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                _secureText = !_secureText;
+                              });
+                            },
+                            icon: Icon(_secureText
+                                ? Icons.remove_red_eye
+                                : Icons.remove_red_eye_outlined),
+                          )),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 10),
+
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25),
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: ((context) => Home())));
+                  },
+                  style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.all(25),
+                      primary: Colors.blue[200],
+                      minimumSize: Size.fromHeight(75),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12))),
+                  child: Text(
+                    'Sign In',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+              ),
+
+              SizedBox(height: 25),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                // ignore: prefer_const_literals_to_create_immutables
+                children: [
+                  Text('Not a member?'),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: ((context) => RegisterPage())));
+                    },
+                    child: Text(
+                      'Register Here.',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            ],
           ),
-        ));
+        )),
+      )),
+    );
   }
 }

@@ -8,7 +8,7 @@ buttonL(context, double height) {
       child: InkWell(
         onTap: () {
           Navigator.push(context,
-              MaterialPageRoute(builder: ((context) => const Login())));
+              MaterialPageRoute(builder: ((context) => const LoginPage())));
         },
         child: Image.asset(
           'assets/login-btn.png',
