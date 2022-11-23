@@ -41,10 +41,14 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             // ignore: prefer_const_literals_to_create_immutables
             children: [
-              Icon(
-                Icons.android,
-                size: 100,
+              Container(
+                height: 150,
+                child: Image.asset('assets/ss-logo.png'),
               ),
+              // Icon(
+              //   Icons.android,
+              //   size: 100,
+              // ),
               //Intro
 
               Text(
