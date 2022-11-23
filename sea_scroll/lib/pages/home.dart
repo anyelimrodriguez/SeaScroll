@@ -12,6 +12,7 @@ import '../components/montStyle.dart';
 import '../components/schoolStyle.dart';
 import 'package:postgres/postgres.dart';
 import 'package:http/http.dart' as http;
+import 'package:sea_scroll/pages/write.dart';
 import 'dart:convert' as convert;
 import 'dart:math';
 
@@ -245,7 +246,7 @@ class _HomeState extends State<Home> {
                     TextButton(
                       onPressed: () {
                         Navigator.push(context,
-                            MaterialPageRoute(builder: ((context) => Home())));
+                            MaterialPageRoute(builder: ((context) => Write())));
                       },
                       child: Text(
                         'Get Message',
