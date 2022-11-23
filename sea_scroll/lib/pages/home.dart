@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sea_scroll/pages/login.dart';
 import 'package:sea_scroll/pages/write.dart';
 import 'package:sea_scroll/pages/signup.dart';
+import '../auth.dart';
 
 import '../components/back-btn.dart';
 import '../components/elevated-box-decoration.dart';
@@ -58,6 +59,13 @@ class _HomeState extends State<Home> {
     } else {
       print('Request failed with status: ${response.statusCode}.');
     }
+  }
+
+  Future<void> signOut() async{
+    await Auth().signOut();
+    Navigator.push(context,MaterialPageRoute(
+      builder: ((context) => LoginPage())));
+    print("Signed out");
   }
 
   @override
@@ -217,10 +225,11 @@ class _HomeState extends State<Home> {
                 children: [
                   TextButton(
                     onPressed: () {
-                      Navigator.push(
+                      signOut();
+                      /*Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: ((context) => LoginPage())));
+                              builder: ((context) => LoginPage())));*/
                     },
                     child: Text(
                       'Log Out',

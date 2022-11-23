@@ -23,6 +23,24 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   bool _secureText = true;
 
+  final TextEditingController _emailTextController = TextEditingController();
+  final TextEditingController _passwordTextController = TextEditingController();
+
+  Future<void> createUserWithEmailAndPassword() async{
+    try{ 
+      await Auth().createUserWithEmailAndPassword(
+        email: _emailTextController.text, 
+        password: _passwordTextController.text);
+      print("Successfully created user");
+      //if succesful, go to homepage
+      Navigator.push(context,
+        MaterialPageRoute(builder: ((context) => Home())));
+    } on FirebaseAuthException catch(e){
+      print(e.code);
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +48,7 @@ class _RegisterPageState extends State<RegisterPage> {
       backgroundColor: Colors.grey[350],
       body: SafeArea(
           child: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/sand-bg.png'),
             fit: BoxFit.fitHeight,
@@ -48,23 +66,23 @@ class _RegisterPageState extends State<RegisterPage> {
               // ),
               //Intro
 
-              Text(
+              const Text(
                 'Welcome!',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 36,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
-              Text(
+              const Text(
                 'Tell us a little bit about yourself.',
                 style: TextStyle(
                   fontSize: 20,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 50,
               ),
 
@@ -78,8 +96,8 @@ class _RegisterPageState extends State<RegisterPage> {
                     // border: Border.all(color: Colors.white),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 20.0),
+                  child: const Padding(
+                    padding: EdgeInsets.only(left: 20.0),
                     child: TextField(
                       decoration: InputDecoration(
                         border: InputBorder.none,
@@ -89,7 +107,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
 
@@ -103,8 +121,8 @@ class _RegisterPageState extends State<RegisterPage> {
                     // border: Border.all(color: Colors.white),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 20.0),
+                  child: const Padding(
+                    padding: EdgeInsets.only(left: 20.0),
                     child: TextField(
                       decoration: InputDecoration(
                         border: InputBorder.none,
@@ -114,7 +132,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
 
@@ -128,8 +146,8 @@ class _RegisterPageState extends State<RegisterPage> {
                     // border: Border.all(color: Colors.white),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 20.0),
+                  child: const Padding(
+                    padding: EdgeInsets.only(left: 20.0),
                     child: TextField(
                       decoration: InputDecoration(
                         border: InputBorder.none,
@@ -139,7 +157,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 50,
               ),
 
@@ -156,7 +174,8 @@ class _RegisterPageState extends State<RegisterPage> {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 20.0),
                     child: TextField(
-                      decoration: InputDecoration(
+                      controller: _emailTextController,
+                      decoration: const InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Email',
                       ),
@@ -164,7 +183,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               //Password textfield
@@ -179,6 +198,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 20.0),
                     child: TextField(
+                      controller: _passwordTextController,
                       obscureText: _secureText,
                       decoration: InputDecoration(
                           border: InputBorder.none,
@@ -197,14 +217,15 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 10),
-
+              const SizedBox(height: 10),
+              //Sign Up Button
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25),
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: ((context) => Home())));
+                    /*Navigator.push(context,
+                        MaterialPageRoute(builder: ((context) => Home())));*/
+                    createUserWithEmailAndPassword();
                   },
                   style: ElevatedButton.styleFrom(
                       padding: EdgeInsets.all(25),
@@ -212,7 +233,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       minimumSize: Size.fromHeight(75),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12))),
-                  child: Text(
+                  child: const Text(
                     'Sign Up',
                     style: TextStyle(
                       color: Colors.white,
@@ -223,13 +244,13 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
               ),
 
-              SizedBox(height: 25),
+              const SizedBox(height: 25),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 // ignore: prefer_const_literals_to_create_immutables
                 children: [
-                  Text('Already a member?'),
-                  SizedBox(
+                  const Text('Already a member?'),
+                  const SizedBox(
                     width: 10,
                   ),
                   TextButton(
@@ -239,7 +260,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           MaterialPageRoute(
                               builder: ((context) => LoginPage())));
                     },
-                    child: Text(
+                    child: const Text(
                       'Login Here.',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
