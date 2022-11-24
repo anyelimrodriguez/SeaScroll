@@ -31,7 +31,11 @@ class _LoginPageState extends State<LoginPage> {
       await Auth().signInWithEmailAndPassword(
       email: _emailTextController.text, 
       password: _passwordTextController.text);
-      print("Successfully signed in user");
+      print("Successfully signed in, curr user info: ");
+      print("Email: ${Auth().currentUser?.email}");
+      print("Name${Auth().currentUser?.displayName}");
+      print("PFP${Auth().currentUser?.photoURL}");
+      
       //if successful
       Navigator.push(context,
         MaterialPageRoute(builder: ((context) => Home())));
@@ -91,7 +95,6 @@ class _LoginPageState extends State<LoginPage> {
               ),
 
               //Email textfield
-
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25),
                 child: Container(
@@ -112,9 +115,10 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
+
               //Password textfield
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -146,20 +150,18 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
 
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25),
                 child: ElevatedButton(
                   onPressed: () {
                     signInWithEmailAndPassword();
-                    /*Navigator.push(context,
-                        MaterialPageRoute(builder: ((context) => Home())));*/
                   },
                   style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.all(25),
-                      primary: Colors.blue[200],
-                      minimumSize: Size.fromHeight(75),
+                      padding: const EdgeInsets.all(25),
+                      backgroundColor: Colors.blue[200],
+                      minimumSize: const Size.fromHeight(75),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12))),
                   child: const Text(

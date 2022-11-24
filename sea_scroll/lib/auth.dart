@@ -27,4 +27,16 @@ class Auth{
   Future<void> signOut() async{
     await _firebaseAuth.signOut();
   }
+
+  Future<void> updateName({
+    required String name
+  }) async{
+    await currentUser?.updateDisplayName(name);
+  }
+
+  Future<void> updateProfilePic({
+    required String photoURL
+  }) async{
+    await currentUser?.updatePhotoURL(photoURL);
+  }
 }
