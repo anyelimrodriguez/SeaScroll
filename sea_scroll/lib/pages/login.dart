@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sea_scroll/pages/home.dart';
+import '../auth.dart';
 
 import '../components/back-btn.dart';
 import '../components/elevated-box-decoration.dart';
@@ -22,6 +23,28 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   bool _secureText = true;
 
+  final TextEditingController _emailTextController = TextEditingController();
+  final TextEditingController _passwordTextController = TextEditingController();
+
+  Future<void> signInWithEmailAndPassword() async{
+    try{ 
+      await Auth().signInWithEmailAndPassword(
+      email: _emailTextController.text, 
+      password: _passwordTextController.text);
+      print("Successfully signed in, curr user info: ");
+      print("Email: ${Auth().currentUser?.email}");
+      print("Name${Auth().currentUser?.displayName}");
+      print("PFP${Auth().currentUser?.photoURL}");
+      
+      //if successful
+      Navigator.push(context,
+        MaterialPageRoute(builder: ((context) => Home())));
+
+    } on FirebaseAuthException catch(e){
+      print(e.code);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
       backgroundColor: Colors.grey[350],
       body: SafeArea(
           child: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/sand-bg.png'),
             fit: BoxFit.fitHeight,
@@ -51,28 +74,27 @@ class _LoginPageState extends State<LoginPage> {
               // ),
               //Intro
 
-              Text(
+              const Text(
                 'Hello Again!',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 36,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
-              Text(
+              const Text(
                 'Welcome back, you\'ve been missed!',
                 style: TextStyle(
                   fontSize: 20,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 50,
               ),
 
               //Email textfield
-
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25),
                 child: Container(
@@ -84,7 +106,8 @@ class _LoginPageState extends State<LoginPage> {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 20.0),
                     child: TextField(
-                      decoration: InputDecoration(
+                      controller: _emailTextController,
+                      decoration: const InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Email',
                       ),
@@ -92,9 +115,10 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
+
               //Password textfield
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -107,6 +131,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 20.0),
                     child: TextField(
+                      controller: _passwordTextController,
                       obscureText: _secureText,
                       decoration: InputDecoration(
                           border: InputBorder.none,
@@ -125,22 +150,21 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
 
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25),
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: ((context) => Home())));
+                    signInWithEmailAndPassword();
                   },
                   style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.all(25),
-                      primary: Colors.blue[200],
-                      minimumSize: Size.fromHeight(75),
+                      padding: const EdgeInsets.all(25),
+                      backgroundColor: Colors.blue[200],
+                      minimumSize: const Size.fromHeight(75),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12))),
-                  child: Text(
+                  child: const Text(
                     'Sign In',
                     style: TextStyle(
                       color: Colors.white,
@@ -156,8 +180,8 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 // ignore: prefer_const_literals_to_create_immutables
                 children: [
-                  Text('Not a member?'),
-                  SizedBox(
+                  const Text('Not a member?'),
+                  const SizedBox(
                     width: 10,
                   ),
                   TextButton(
@@ -167,7 +191,7 @@ class _LoginPageState extends State<LoginPage> {
                           MaterialPageRoute(
                               builder: ((context) => RegisterPage())));
                     },
-                    child: Text(
+                    child: const Text(
                       'Register Here.',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
