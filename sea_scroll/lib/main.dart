@@ -4,7 +4,6 @@ import 'package:postgres/postgres.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 import 'package:firebase_core/firebase_core.dart';
-import 'package:sea_scroll/pages/randomscroll.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
