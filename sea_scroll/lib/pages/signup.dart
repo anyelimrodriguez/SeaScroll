@@ -10,6 +10,7 @@ import '../components/back-btn.dart';
 import '../components/elevated-box-decoration.dart';
 import '../components/enter-btn.dart';
 import '../components/montStyle.dart';
+import '../components/snackbar-message.dart';
 
 import 'login.dart';
 
@@ -48,6 +49,10 @@ class _RegisterPageState extends State<RegisterPage> {
     } else {
       print('Request failed with status: ${response.statusCode}.');
     }
+  }
+  void showLoginPage(){
+    Navigator.push(context,
+      MaterialPageRoute(builder: ((context) => LoginPage())));
   }
 
   Future<void> createUserWithEmailAndPassword() async{
@@ -97,8 +102,40 @@ class _RegisterPageState extends State<RegisterPage> {
       //If authentication was succesful, go to homepage
       Navigator.push(context,
         MaterialPageRoute(builder: ((context) => Home())));
+
     } on FirebaseAuthException catch(e){
-      print(e.code);
+      //If there are errors, send a message to let the user know
+      String errorMessage = "";
+      if (e.code == 'weak-password') {
+        errorMessage =
+          "The password provided is too weak.";
+        //print('The password provided is too weak.');
+      } else if (e.code ==
+          'email-already-in-use') {
+        errorMessage =
+          "An account already exists for that email.";
+        //print('An account already exists for that email.');
+      } else if (e.code ==
+        'invalid-email') {
+        errorMessage =
+          "The email provided is invalid.";
+        //print('Please enter a valid email');
+      } else {
+        errorMessage =
+          "Something is wrong.";
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        snackBarMessage(
+          errorMessage, 
+          e.code == 'email-already-in-use' ? "Login" : "Try again",
+          () {
+            if (e.code=='email-already-in-use') {
+              showLoginPage();
+            }
+            //otherwise don't do anything
+          }
+        )
+      );
     }
   }
 
