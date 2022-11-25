@@ -16,9 +16,13 @@ import 'package:postgres/postgres.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 import 'dart:math';
+import 'package:sea_scroll/pages/randomscroll.dart';
 
 class Write extends StatefulWidget {
-  const Write({super.key});
+  final int scrollid;
+  final String title;
+  final List<dynamic> messages;
+  const Write({super.key, required this.scrollid, required this.title, required this.messages});
 
   @override
   State<Write> createState() => _WriteState();
@@ -48,7 +52,7 @@ class _WriteState extends State<Write> {
     if (response.statusCode == 200) {
       // All the data in a array(json objects), all the Scrolls
       var data = convert.jsonDecode(response.body);
-      print(data.length);
+      // print(data.length);
       // Getting random JSON object with a random function
       int randInt = random.nextInt(data.length);
 
@@ -92,6 +96,10 @@ class _WriteState extends State<Write> {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
 
+    print('Write: ');
+    print(widget.scrollid);
+    print(widget.title);
+    print(widget.messages);
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: Colors.grey[350],
@@ -177,7 +185,7 @@ class _WriteState extends State<Write> {
                                         itemCount:
                                             snap.data!['messages'].length,
                                         itemBuilder: (context, index) {
-                                          print(snap.data!);
+                                          //print(snap.data!);
                                           return Padding(
                                             padding: EdgeInsets.all(5),
                                             child: Container(

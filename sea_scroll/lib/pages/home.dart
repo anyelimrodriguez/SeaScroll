@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sea_scroll/pages/login.dart';
+import 'package:sea_scroll/pages/randomscroll.dart';
 import 'package:sea_scroll/pages/write.dart';
 import 'package:sea_scroll/pages/signup.dart';
 import '../auth.dart';
@@ -192,34 +193,6 @@ class _HomeState extends State<Home> {
                       }),
                 ),
               ),
-              // Container(
-              //     width: 400,
-              //     decoration: const BoxDecoration(
-              //         color: Colors.red,
-              //         border: Border(
-              //           bottom: BorderSide(width: 2),
-              //         )),
-              //     child: Align(
-              //       alignment: Alignment.center,
-              //       child: Container(
-              //           margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
-              //           width: 200,
-              //           child: ElevatedButton(
-              //               onPressed: () {
-              //                 _postData(
-              //                     name: 'Snowball',
-              //                     bio: 'Pure evil',
-              //                     pfp: 'https://wallpaper.dog/large/7756.jpg');
-              //                 Future.delayed(const Duration(milliseconds: 2000),
-              //                     () {
-              //                   Navigator.push(
-              //                       context,
-              //                       MaterialPageRoute(
-              //                           builder: ((context) => Home())));
-              //                 });
-              //               },
-              //               child: Text("Add Myself"))),
-              //     )),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -243,12 +216,7 @@ class _HomeState extends State<Home> {
                   ),
                   TextButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: ((context) => Write()),
-                        ),
-                      );
+                      Navigator.push(context, MaterialPageRoute(builder: ((context) => RandomScroll()),),);
                     },
                     child: Text(
                       'Get Message',
