@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sea_scroll/pages/home.dart';
+import 'package:sea_scroll/pages/intro.dart';
 import 'pages/login.dart';
 import 'package:postgres/postgres.dart';
 import 'package:http/http.dart' as http;

@@ -95,9 +95,9 @@ class _PostState extends State<Post> {
           child: Center(
             child: Container(
               child: Padding(
-                padding: const EdgeInsets.only(top: 140),
+                padding: const EdgeInsets.only(top: 130),
                 child: Container(
-                  height: height / 1.7,
+                  height: height / 1.5,
                   width: 300,
                   decoration: BoxDecoration(
                     color: Colors.orange[100],
@@ -160,8 +160,8 @@ class _PostState extends State<Post> {
                         child: TextField(
                           controller: _scrollmessageController,
                           keyboardType: TextInputType.multiline,
-                          maxLines: 3,
-                          maxLength: 100,
+                          maxLines: 1,
+                          maxLength: 500,
                           decoration: InputDecoration(
                             enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
