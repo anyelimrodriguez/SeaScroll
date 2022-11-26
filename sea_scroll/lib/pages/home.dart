@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sea_scroll/pages/login.dart';
+import 'package:sea_scroll/pages/post.dart';
 import 'package:sea_scroll/pages/randomscroll.dart';
 import 'package:sea_scroll/pages/write.dart';
 import 'package:sea_scroll/pages/signup.dart';
@@ -62,10 +63,10 @@ class _HomeState extends State<Home> {
     }
   }
 
-  Future<void> signOut() async{
+  Future<void> signOut() async {
     await Auth().signOut();
-    Navigator.push(context,MaterialPageRoute(
-      builder: ((context) => LoginPage())));
+    Navigator.push(
+        context, MaterialPageRoute(builder: ((context) => LoginPage())));
     print("Signed out");
   }
 
@@ -83,153 +84,236 @@ class _HomeState extends State<Home> {
     ];
     Random random = Random();
 
-    return Container(
-        height: height,
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/sand-bg.png'),
-            fit: BoxFit.fitHeight,
-          ),
+    return Scaffold(
+        body: Container(
+      height: height,
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('assets/sand-bg.png'),
+          fit: BoxFit.fitHeight,
         ),
-        child: Container(
+      ),
+      child: Container(
           margin:
               const EdgeInsets.only(left: 30, top: 100, right: 30, bottom: 50),
           decoration: elevatedBox(),
-          child: Column(
-            children: [
-              Expanded(
-                child: Container(
-                  decoration: const BoxDecoration(
-                      // color: Colors.amber,
-                      ),
-                  child: FutureBuilder<List<dynamic>>(
-                      future: _getData(),
-                      builder: (context, AsyncSnapshot<List<dynamic>> snap) {
-                        if (snap.hasData) {
-                          // print(snap.data![0]);
-                          return SingleChildScrollView(
-                            child: Container(
-                                decoration: const BoxDecoration(
-                                    // color: Colors.blue,
-                                    border: Border(
-                                  bottom: BorderSide(
-                                      width: 5, color: Colors.blueGrey),
-                                )),
-                                height:
-                                    MediaQuery.of(context).size.height / 1.432,
-                                child: ListView.builder(
-                                  itemCount: snap.data!.length,
-                                  itemBuilder: (context, index) {
-                                    // print(snap.data!.length);
-                                    var name =
-                                        snap.data![index]['name'].toString();
-                                    return GestureDetector(
-                                        onTap: () {
-                                          var pfplink;
-                                          if (snap.data![index]['pfp'] ==
-                                              null) {
-                                            pfplink =
-                                                'https://ia801703.us.archive.org/6/items/twitter-default-pfp/e.png';
-                                          } else {
-                                            pfplink = snap.data![index]['pfp']
-                                                .toString();
-                                          }
-                                          _showFullModal(
-                                              context,
-                                              snap.data![index]['name']
-                                                  .toString(),
-                                              snap.data![index]['bio']
-                                                  .toString(),
-                                              pfplink);
-                                        },
-                                        child: Container(
-                                            height: 60,
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
-                                                color: Color.fromRGBO(
-                                                    239, 253, 255, 1)),
-                                            alignment: Alignment.centerLeft,
-                                            margin: const EdgeInsets.symmetric(
-                                                horizontal: 0, vertical: 2),
-                                            child: Row(children: [
-                                              Container(
-                                                  height: 40,
-                                                  margin:
-                                                      const EdgeInsets.fromLTRB(
-                                                          10, 0, 20, 0),
-                                                  child: CircleAvatar(
-                                                      backgroundColor: colors[
-                                                          random.nextInt(
-                                                              colors.length)],
-                                                      child: Text(
-                                                          name[0].toUpperCase(),
-                                                          style: const TextStyle(
-                                                              fontSize: 18,
-                                                              fontFamily:
-                                                                  'Roboto',
-                                                              color: Colors
-                                                                  .black)))),
-                                              Material(
-                                                child: Text(name.toUpperCase(),
-                                                    style: const TextStyle(
-                                                        fontSize: 20,
-                                                        fontFamily: 'Roboto',
-                                                        color: Colors.teal,
-                                                        backgroundColor:
-                                                            Color.fromRGBO(239,
-                                                                253, 255, 1),
-                                                        fontWeight:
-                                                            FontWeight.w400)),
-                                              )
-                                            ])));
-                                  },
-                                )),
-                          );
-                        } else {
-                          return const Center(
-                              child: CircularProgressIndicator());
-                        }
-                      }),
-                ),
+          child: Column(children: [
+            Expanded(
+              child: Container(
+                decoration: const BoxDecoration(
+                    // color: Colors.amber,
+                    ),
+                child: FutureBuilder<List<dynamic>>(
+                    future: _getData(),
+                    builder: (context, AsyncSnapshot<List<dynamic>> snap) {
+                      if (snap.hasData) {
+                        // print(snap.data![0]);
+                        return SingleChildScrollView(
+                          child: Container(
+                              decoration: const BoxDecoration(
+                                  // color: Colors.blue,
+                                  border: Border(
+                                bottom: BorderSide(
+                                    width: 5, color: Colors.blueGrey),
+                              )),
+                              height:
+                                  MediaQuery.of(context).size.height / 1.432,
+                              child: ListView.builder(
+                                itemCount: snap.data!.length,
+                                itemBuilder: (context, index) {
+                                  // print(snap.data!.length);
+                                  var name =
+                                      snap.data![index]['name'].toString();
+                                  return GestureDetector(
+                                      onTap: () {
+                                        var pfplink;
+                                        if (snap.data![index]['pfp'] == null) {
+                                          pfplink =
+                                              'https://ia801703.us.archive.org/6/items/twitter-default-pfp/e.png';
+                                        } else {
+                                          pfplink = snap.data![index]['pfp']
+                                              .toString();
+                                        }
+                                        _showFullModal(
+                                            context,
+                                            snap.data![index]['name']
+                                                .toString(),
+                                            snap.data![index]['bio'].toString(),
+                                            pfplink);
+                                      },
+                                      child: Container(
+                                          height: 60,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              color: Color.fromRGBO(
+                                                  239, 253, 255, 1)),
+                                          alignment: Alignment.centerLeft,
+                                          margin: const EdgeInsets.symmetric(
+                                              horizontal: 0, vertical: 2),
+                                          child: Row(children: [
+                                            Container(
+                                                height: 40,
+                                                margin:
+                                                    const EdgeInsets.fromLTRB(
+                                                        10, 0, 20, 0),
+                                                child: CircleAvatar(
+                                                    backgroundColor: colors[
+                                                        random.nextInt(
+                                                            colors.length)],
+                                                    child: Text(
+                                                        name[0].toUpperCase(),
+                                                        style: const TextStyle(
+                                                            fontSize: 18,
+                                                            fontFamily:
+                                                                'Roboto',
+                                                            color: Colors
+                                                                .black)))),
+                                            Material(
+                                              child: Text(name.toUpperCase(),
+                                                  style: const TextStyle(
+                                                      fontSize: 20,
+                                                      fontFamily: 'Roboto',
+                                                      color: Colors.teal,
+                                                      backgroundColor:
+                                                          Color.fromRGBO(
+                                                              239, 253, 255, 1),
+                                                      fontWeight:
+                                                          FontWeight.w400)),
+                                            )
+                                          ])));
+                                },
+                              )),
+                        );
+                      } else {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                    }),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  TextButton(
+            ),
+            // Container(
+            //     width: 400,
+            //     decoration: const BoxDecoration(
+            //         color: Colors.red,
+            //         border: Border(
+            //           bottom: BorderSide(width: 2),
+            //         )),
+            //     child: Align(
+            //       alignment: Alignment.center,
+            //       child: Container(
+            //           margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+            //           width: 200,
+            //           child: ElevatedButton(
+            //               onPressed: () {
+            //                 _postData(
+            //                     name: 'Snowball',
+            //                     bio: 'Pure evil',
+            //                     pfp: 'https://wallpaper.dog/large/7756.jpg');
+            //                 Future.delayed(const Duration(milliseconds: 2000),
+            //                     () {
+            //                   Navigator.push(
+            //                       context,
+            //                       MaterialPageRoute(
+            //                           builder: ((context) => Home())));
+            //                 });
+            //               },
+            //               child: Text("Add Myself"))),
+            //     )),
+            Column(
+              children: [
+                Container(
+                  child: FloatingActionButton(
                     onPressed: () {
-                      signOut();
-                      /*Navigator.push(
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const Post()),
+                      );
+                    },
+                    backgroundColor: Colors.blue,
+                    child: const Icon(Icons.add),
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                //       TextButton(
+                //         onPressed: () {
+                //           signOut();
+                //           /*Navigator.push(
+                //               context,
+                //               MaterialPageRoute(
+                //                   builder: ((context) => LoginPage())));*/
+                //         },
+                //         child: Text(
+                //           'Log Out',
+                //           style: TextStyle(
+                //             fontWeight: FontWeight.bold,
+                //           ),
+                //         ),
+                //       ),
+                //       SizedBox(
+                //         width: 50,
+                //       ),
+                //       TextButton(
+                //         onPressed: () {
+                //           Navigator.push(
+                //             context,
+                //             MaterialPageRoute(
+                //               builder: ((context) => Write()),
+                //             ),
+                //           );
+                //         },
+                //         child: Text(
+                //           'Get Message',
+                //           style: TextStyle(
+                //             fontWeight: FontWeight.bold,
+                //           ),
+                // ),),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        signOut();
+                        /*Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: ((context) => LoginPage())));*/
-                    },
-                    child: Text(
-                      'Log Out',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                      },
+                      child: Text(
+                        'Log Out',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    width: 50,
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: ((context) => RandomScroll()),),);
-                    },
-                    child: Text(
-                      'Get Message',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                    SizedBox(
+                      width: 50,
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: ((context) => RandomScroll()),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        'Get Message',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ));
+                  ],
+                ),
+              ],
+            ),
+          ])),
+    ));
   }
 }
 
