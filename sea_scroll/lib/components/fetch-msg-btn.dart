@@ -8,8 +8,7 @@ buttonF(context, double height) {
       type: MaterialType.transparency,
       child: InkWell(
         onTap: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: ((context) => Write())));
+          //Navigator.push(context, MaterialPageRoute(builder: ((context) => Write())));
         },
         child: Image.asset(
           'assets/fetch-msg-btn.png',

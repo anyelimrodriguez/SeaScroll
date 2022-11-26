@@ -16,9 +16,18 @@ import 'package:postgres/postgres.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 import 'dart:math';
+import 'package:sea_scroll/pages/randomscroll.dart';
 
 class Write extends StatefulWidget {
-  const Write({super.key});
+
+  // Information about the scroll
+  final int scrollid;
+  final String title;
+  final List<dynamic> messages;
+
+  
+  // Instantiate it here
+  const Write({super.key, required this.scrollid, required this.title, required this.messages});
 
   @override
   State<Write> createState() => _WriteState();
@@ -41,25 +50,6 @@ class _WriteState extends State<Write> {
     Colors.deepOrangeAccent
   ];
 
-  // Cloud Function Used here to get all Scrolls
-  var url = Uri.parse('https://getscrolls-rxfc6rk7la-uc.a.run.app/');
-  Future<dynamic> _getScrolls() async {
-    var response = await http.get(url);
-    if (response.statusCode == 200) {
-      // All the data in a array(json objects), all the Scrolls
-      var data = convert.jsonDecode(response.body);
-      print(data.length);
-      // Getting random JSON object with a random function
-      int randInt = random.nextInt(data.length);
-
-      // Return random JSON object , the random Scroll
-      return data[randInt];
-    } else {
-      print('Request failed with status: ${response.statusCode}.');
-      return {};
-    }
-  }
-
   // Cloud Function used here to post a messsage to Scroll
   var urlPost = Uri.parse('https://postmessage-rxfc6rk7la-uc.a.run.app/');
 
@@ -77,21 +67,19 @@ class _WriteState extends State<Write> {
     print('process ended');
   }
 
-  // State Code for the future bulider, run the future once only in the beggning of the rendering of the page
-  Future? _data;
-
-  @override
-  void initState() {
-    super.initState();
-    _data = _getScrolls();
-  }
 
   @override
   Widget build(BuildContext context) {
     bool _secureText = false;
+
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
 
+    // Debug Printing
+    print('Write: ');
+    print(widget.scrollid);
+    print(widget.title);
+    print(widget.messages);
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: Colors.grey[350],
@@ -125,20 +113,41 @@ class _WriteState extends State<Write> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 // crossAxisAlignment: CrossAxisAlignment.start,
-
                 // ignore: prefer_const_literals_to_create_immutables
+                // For the icon back button and Title of the scroll I have them inside a row 
                 children: [
-                  IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: ((context) => Home()),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 0, 30, 0),
+                        child: IconButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: ((context) => Home()),
+                              ),
+                            );
+                          },
+                          icon: const Icon(Icons.arrow_back),
+                          iconSize: 45,
                         ),
-                      );
-                    },
-                    icon: const Icon(Icons.arrow_back),
-                    iconSize: 50,
+                      ),
+                      Expanded (
+                        child: Text(
+                            widget.title, 
+                            style: TextStyle(
+                              color: Color(0xFF007AFF),
+                              fontWeight: FontWeight.bold,
+                              fontSize: width/17,
+                              fontFamily: "cursive"
+                            ),
+                         ),
+                      ),
+                        
+                     
+                    ],
                   ),
                   //Intro
 
@@ -150,11 +159,7 @@ class _WriteState extends State<Write> {
                       decoration: const BoxDecoration(
                           // color: Colors.amber,
                           ),
-                      child: FutureBuilder<dynamic>(
-                          future: _data,
-                          builder: (context, AsyncSnapshot<dynamic> snap) {
-                            if (snap.hasData) {
-                              return Column(
+                      child: Column(
                                 children: [
                                   Container(
                                     height: height / 1.7,
@@ -175,9 +180,9 @@ class _WriteState extends State<Write> {
                                     ),
                                     child: ListView.builder(
                                         itemCount:
-                                            snap.data!['messages'].length,
+                                            widget.messages.length,
                                         itemBuilder: (context, index) {
-                                          print(snap.data!);
+                                          //print(snap.data!);
                                           return Padding(
                                             padding: EdgeInsets.all(5),
                                             child: Container(
@@ -202,8 +207,16 @@ class _WriteState extends State<Write> {
                                                   SizedBox(
                                                     width: 20,
                                                   ),
-                                                  Text(snap.data!['messages']
-                                                      [index]),
+                                                  Expanded (
+                                                    child: Text(
+                                                      widget.messages[index],
+                                                      style: TextStyle(
+                                                        fontWeight: FontWeight.bold,
+                                                        fontFamily: "Lato",
+                                                        
+                                                      ),
+                                                    ),
+                                                  ),
                                                 ],
                                               ),
                                             ),
@@ -229,22 +242,19 @@ class _WriteState extends State<Write> {
                                           hintText: 'Whats on your mind?',
                                           suffixIcon: IconButton(
                                             onPressed: () {
-                                              print(snap.data!["scrollid"]);
+                                              print(widget.scrollid);
                                               print(_messageController.text);
                                               if (_messageController.text !=
                                                   '') {
                                                 _postMessage(
                                                     message:
                                                         _messageController.text,
-                                                    id: (snap.data!["scrollid"]
-                                                        .toString()));
+                                                    id: (widget.scrollid.toString()));
                                               }
 
                                               Navigator.push(
                                                   context,
-                                                  MaterialPageRoute(
-                                                      builder: ((context) =>
-                                                          Home())));
+                                                  MaterialPageRoute(builder: ((context) =>Home())));
                                             },
                                             icon: const Icon(Icons.send),
                                           ),
@@ -288,13 +298,8 @@ class _WriteState extends State<Write> {
                                   //     ],
                                   //   ),
                                 ],
-                              );
-                            } else {
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            }
-                          }),
+                              )
+                            
                     ),
                   ),
                   const SizedBox(

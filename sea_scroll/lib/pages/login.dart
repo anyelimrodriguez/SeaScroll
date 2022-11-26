@@ -11,6 +11,7 @@ import '../components/elevated-box-decoration.dart';
 import '../components/enter-btn.dart';
 import '../components/montStyle.dart';
 
+import '../components/snackbar-message.dart';
 import 'signup.dart';
 
 class LoginPage extends StatefulWidget {
@@ -25,6 +26,11 @@ class _LoginPageState extends State<LoginPage> {
 
   final TextEditingController _emailTextController = TextEditingController();
   final TextEditingController _passwordTextController = TextEditingController();
+
+  void showSignUpPage() {
+    Navigator.push(
+        context, MaterialPageRoute(builder: ((context) => RegisterPage())));
+  }
 
   Future<void> signInWithEmailAndPassword() async {
     try {
@@ -41,6 +47,31 @@ class _LoginPageState extends State<LoginPage> {
           context, MaterialPageRoute(builder: ((context) => Home())));
     } on FirebaseAuthException catch (e) {
       print(e.code);
+      //If there are errors, send a message to let the user know
+      String errorMessage = "";
+      if (e.code == 'invalid-email') {
+        errorMessage = "The email entered is invalid.";
+        print('Email invalid');
+      } else if (e.code == 'user-disabled') {
+        errorMessage = "Your account has been disabled.";
+        print('User disabled');
+      } else if (e.code == 'user-not-found') {
+        errorMessage = "No account has been found with this email.";
+        print('User not found');
+      } else if (e.code == 'wrong-password') {
+        errorMessage = "You entered the wrong password.";
+        print('Wrong Password');
+      } else {
+        errorMessage = "Something is wrong.";
+      }
+      ScaffoldMessenger.of(context).showSnackBar(snackBarMessage(
+          errorMessage, e.code == 'user-not-found' ? "Sign Up" : "Try again",
+          () {
+        if (e.code == 'user-not-found') {
+          showSignUpPage();
+        }
+        //otherwise don't do anything
+      }));
     }
   }
 

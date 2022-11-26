@@ -10,6 +10,7 @@ import '../components/back-btn.dart';
 import '../components/elevated-box-decoration.dart';
 import '../components/enter-btn.dart';
 import '../components/montStyle.dart';
+import '../components/snackbar-message.dart';
 
 import 'login.dart';
 
@@ -36,22 +37,28 @@ class _RegisterPageState extends State<RegisterPage> {
   var urlPost = Uri.parse('https://postuser-rxfc6rk7la-uc.a.run.app/');
 
   Future<void> _postData(
-      {required String name,
+      {required String userid,
+      required String name,
       required String bio,
-      String? pfp,
-      String? id}) async {
+      String? pfp}) async {
     http.Response response;
     if (pfp != null) {
-      response = await http
-          .post(urlPost, body: {'name': name, 'bio': bio, 'pfp': pfp});
+      response = await http.post(urlPost,
+          body: {'userid': userid, 'name': name, 'bio': bio, 'pfp': pfp});
     } else {
-      response = await http.post(urlPost, body: {'name': name, 'bio': bio});
+      response = await http
+          .post(urlPost, body: {'userid': userid, 'name': name, 'bio': bio});
     }
     if (response.statusCode == 200) {
       print('User was successfully added');
     } else {
       print('Request failed with status: ${response.statusCode}.');
     }
+  }
+
+  void showLoginPage() {
+    Navigator.push(
+        context, MaterialPageRoute(builder: ((context) => LoginPage())));
   }
 
   Future<void> createUserWithEmailAndPassword() async {
@@ -84,15 +91,15 @@ class _RegisterPageState extends State<RegisterPage> {
           "") //if pfp empty, just add name/bio
       {
         _postData(
+          userid: userID!,
           name: _nameTextController.text,
           bio: _bioTextController.text,
-          //id: userID
         );
       } else {
         _postData(
+            userid: userID!,
             name: _nameTextController.text,
             bio: _bioTextController.text,
-            //id: userID,
             pfp: _profilePicLinkTextController.text);
       }
 
@@ -100,7 +107,27 @@ class _RegisterPageState extends State<RegisterPage> {
       Navigator.push(
           context, MaterialPageRoute(builder: ((context) => Home())));
     } on FirebaseAuthException catch (e) {
-      print(e.code);
+      //If there are errors, send a message to let the user know
+      String errorMessage = "";
+      if (e.code == 'weak-password') {
+        errorMessage = "The password provided is too weak.";
+        //print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        errorMessage = "An account already exists for that email.";
+        //print('An account already exists for that email.');
+      } else if (e.code == 'invalid-email') {
+        errorMessage = "The email provided is invalid.";
+        //print('Please enter a valid email');
+      } else {
+        errorMessage = "Something is wrong.";
+      }
+      ScaffoldMessenger.of(context).showSnackBar(snackBarMessage(errorMessage,
+          e.code == 'email-already-in-use' ? "Login" : "Try again", () {
+        if (e.code == 'email-already-in-use') {
+          showLoginPage();
+        }
+        //otherwise don't do anything
+      }));
     }
   }
 
