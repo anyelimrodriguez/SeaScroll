@@ -209,12 +209,16 @@ class _PostState extends State<Post> {
                                   _postMessage(
                                       message: _scrollmessageController.text,
                                       title: _titleController.text);
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: ((context) => Home())));
                                 }
 
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: ((context) => Home())));
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //         builder: ((context) => Home())));
                               },
                               child: const Text('POST'),
                             ),
