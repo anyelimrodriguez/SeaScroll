@@ -204,7 +204,8 @@ class _PostState extends State<Post> {
                               ),
                               onPressed: () {
                                 print(_scrollmessageController.text);
-                                if (_scrollmessageController.text != '') {
+                                if (_scrollmessageController.text != '' &&
+                                    _titleController.text != '') {
                                   _postMessage(
                                       message: _scrollmessageController.text,
                                       title: _titleController.text);
