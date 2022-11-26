@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sea_scroll/pages/home.dart';
 import 'pages/login.dart';
 import 'package:postgres/postgres.dart';
 import 'package:http/http.dart' as http;
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const LoginPage(),
+      home: const Home(),
     );
   }
 }
